@@ -1,13 +1,14 @@
 'use strict';
 
-const config = require('../config');
+require('dotenv/config');
 const sendgrid = require('@sendgrid/mail');
-sendgrid.setApiKey(config.sendgridkey);
+
+sendgrid.setApiKey(process.env.SENDGRID_KEY);
 
 exports.send = async(to, subject, body) => {
   const msg = {
     to: to,
-    from: 'rodconcurseiro@gmail.com',
+    from: process.env.EMAIL,
     subject: subject,
     html: body
   };

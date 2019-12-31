@@ -1,13 +1,14 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
+require('dotenv/config');
 
 exports.generateToken = async(data) => {
-  return jwt.sign(data, global.SALT_KEY, { expiresIn: '1d'});
+  return jwt.sign(data, process.env.SALT_KEY, { expiresIn: '1d'});
 }
 
 exports.decodeToken = async(token) => {
-  let data = await jwt.verify(token, global.SALT_KEY);
+  let data = await jwt.verify(token, process.env.SALT_KEY);
   return data;
 }
 
@@ -18,7 +19,7 @@ exports.authorize = (req, res, next) => {
       message: 'Acesso restrito'
     });
   } else {
-    jwt.verify(token, global.SALT_KEY, (error, decoded) => {
+    jwt.verify(token, process.env.SALT_KEY, (error, decoded) => {
       if(error) {
         res.status(401).json({
           message: 'Token inválido'
@@ -38,7 +39,7 @@ exports.isAdmin = (req, res, next) => {
       message: 'Token Inválido'
     });
   } else {
-    jwt.verify(token, global.SALT_KEY, (error, decoded) => {
+    jwt.verify(token, process.env.SALT_KEY, (error, decoded) => {
       if(error) {
         res.status(401).json({
           message: 'Token Inválido'

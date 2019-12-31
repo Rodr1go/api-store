@@ -4,13 +4,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
-const config = require('./config');
+require('dotenv/config');
 
 const app = express();
 const router = express.Router();
 
 // Conecta ao banco
-mongoose.connect(config.connectionString,{useNewUrlParser: true, useCreateIndex: true}); 
+mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser: true, useCreateIndex: true}); 
 
 // Carrega os models
 const Product = require('./models/product');
